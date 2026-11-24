@@ -1,0 +1,39 @@
+DROGARIA REDE MAIS — PRIMEIRA VERSÃO DO SITE
+
+COMO ABRIR
+1. Extraia o ZIP.
+2. Abra a pasta e execute index.html no navegador.
+3. Para publicar, envie todos os arquivos para a hospedagem mantendo a estrutura de pastas.
+
+ANTES DE PUBLICAR — OBRIGATÓRIO
+1. Abra js/config.js e preencha:
+   - whatsapp: número comercial com código do país e DDD, somente números (ex.: 5531999999999).
+   - city, neighborhood, address e hours.
+2. Substitua os produtos demonstrativos em js/products.js por produtos reais, com dados, imagens e informações confirmadas.
+3. Troque https://www.seudominio.com.br em index.html, robots.txt e sitemap.xml pelo domínio final.
+4. Revise o texto de privacidade e os dados estruturados.
+5. Confirme as regras sanitárias e de publicidade da ANVISA para cada produto e forma de oferta.
+
+IMPORTANTE
+- O catálogo incluído é demonstrativo, não representa estoque ou oferta real.
+- Não há preços cadastrados nem pagamento online.
+- A lista de consulta é enviada pelo WhatsApp; a equipe confirma preço e disponibilidade.
+- Não cadastre medicamentos controlados ou produtos cuja venda online seja proibida.
+- Esta versão não possui painel administrativo seguro. A edição do catálogo é feita em js/products.js.
+- Não inclua credenciais, senhas ou chaves secretas em arquivos públicos.
+- O número de WhatsApp está em branco intencionalmente, pois não foi informado.
+
+ESTRUTURA
+index.html                  Página inicial e catálogo
+politica-de-privacidade.html Política de privacidade inicial
+css/style.css               Estilos responsivos
+js/config.js                Dados da loja e WhatsApp
+js/products.js              Catálogo demonstrativo
+js/app.js                   Busca, categorias, lista e WhatsApp
+images/logo-rede-mais.jpg   Imagem enviada como identidade visual
+
+Próximas melhorias recomendadas:
+- Criar painel administrativo com autenticação real.
+- Integrar catálogo e imagens ao Supabase.
+- Criar páginas individuais indexáveis para categorias e produtos.
+- Configurar Google Search Console e Analytics, com consentimento quando aplicável.
