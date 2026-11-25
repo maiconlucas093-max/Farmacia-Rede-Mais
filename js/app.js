@@ -75,7 +75,7 @@
  function updateCart(){
    $("#cartCount").textContent=cart.reduce((n,x)=>n+x.qty,0);
    $("#cartItems").innerHTML=cart.length?cart.map(x=>{const p=products.find(y=>y.id===x.id);return `<div class="cart-line"><span><strong>${escapeHtml(p.name)}</strong><br><small>Quantidade: ${x.qty}</small></span><span><button data-remove="${x.id}">Remover</button></span></div>`;}).join(""):"<p>Sua lista está vazia. Adicione produtos do catálogo para consultar.</p>";
-   document.querySelectorAll("[data-remove]").forEach(b=>b.addEventListener("click",()=>{cart=cart.filter(x=>x.id!==Number(b.dataset.remove));updateCart();}));
+   document.querySelectorAll("[data-remove]").forEach(b=>b.addEventListener("click",()=>{cart=cart.filter(x=>x.id!==b.dataset.remove);updateCart();}));
  }
  $("#searchForm").addEventListener("submit",e=>{e.preventDefault();activeCategory="";renderCategories();filterProducts($("#searchInput").value);$("#produtos").scrollIntoView({behavior:"smooth"});});
  $("#searchInput").addEventListener("input",e=>{activeCategory="";renderCategories();filterProducts(e.target.value);});
