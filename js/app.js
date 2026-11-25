@@ -1,7 +1,7 @@
 (() => {
  const cfg = window.STORE_CONFIG || {};
- const products = window.PRODUCTS || [];
- const categories = window.CATEGORIES || [];
+   let products = [];
+  let categories = [];
  const $ = s => document.querySelector(s);
  const normalize = s => (s||"").toString().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
  let cart = [];
@@ -9,6 +9,33 @@
  const phone = (cfg.whatsapp || "").replace(/\D/g,"");
  const makeWhatsApp = message => phone ? `https://wa.me/${phone}?text=${encodeURIComponent(message)}` : "";
  const generalMessage = "Olá! Gostaria de informações sobre os produtos da Drogaria Rede Mais.";
+   async function loadRemoteCatalog() {
+    const supabase = window.redeMaisSupabase;
+    
+    if (!supabase) {
+      throw new Error("Conexão com o Supabase não encontrada.");
+    }
+    
+    const [categoryResult, productResult] = await Promise.all([
+      supabase
+      .from("categories")
+      .select("name, icon, is_active, sort_order")
+      .eq("is_active", true)
+      .order("sort_order"),
+      
+      supabase
+      .from("products")
+      .select("id, name, brand, category, description, keywords, icon, image_url, price, stock, active")
+      .eq("active", true)
+      .order("name")
+    ]);
+    
+    if (categoryResult.error) throw categoryResult.error;
+    if (productResult.error) throw productResult.error;
+    
+    categories = categoryResult.data || [];
+    products = productResult.data || [];
+  }
  function setupLinks(){
    document.querySelectorAll("[data-whatsapp-link]").forEach(a=>{
      const url=makeWhatsApp(generalMessage);
