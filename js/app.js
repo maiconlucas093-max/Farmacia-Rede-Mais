@@ -50,7 +50,7 @@
    window.open(url,"_blank","noopener");
  }
  function renderCategories(){
-   $("#categoryGrid").innerHTML=categories.map(c=>`<button class="category-card ${activeCategory===c.name?"active":""}" data-category="${escapeHtml(c.name)}"><span class="category-icon">${c.icon}</span><strong>${escapeHtml(c.name)}</strong></button>`).join("");
+ $("#categoryGrid").innerHTML=categories.map(c=>`<button class="category-card ${activeCategory===c.name?"active":""}" data-category="${escapeHtml(c.name)}"><span class="category-icon">${escapeHtml(c.icon||"＋")}</span><strong>${escapeHtml(c.name)}</strong></button>`).join("");
    document.querySelectorAll("[data-category]").forEach(b=>b.addEventListener("click",()=>{activeCategory=b.dataset.category;renderCategories();filterProducts($("#searchInput").value);document.querySelector("#produtos").scrollIntoView({behavior:"smooth"});}));
  }
  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
