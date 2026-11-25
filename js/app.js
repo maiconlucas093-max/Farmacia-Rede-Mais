@@ -90,6 +90,20 @@
  $("#menuToggle").addEventListener("click",()=>{const nav=$("#mainNav");const open=nav.classList.toggle("open");$("#menuToggle").setAttribute("aria-expanded",String(open));});
  document.querySelectorAll("#mainNav a").forEach(a=>a.addEventListener("click",()=>{$("#mainNav").classList.remove("open");$("#menuToggle").setAttribute("aria-expanded","false");}));
  $("#year").textContent=new Date().getFullYear();
- setupLinks();renderCategories();filterProducts("");
+   setupLinks();
+  
+  loadRemoteCatalog()
+    .then(() => {
+      renderCategories();
+      filterProducts("");
+    })
+    .catch(error => {
+      console.error("Erro ao carregar catálogo:", error);
+      categories = [];
+      products = [];
+      renderCategories();
+      renderProducts([]);
+      $("#resultCount").textContent = "Não foi possível carregar o catálogo. Tente novamente mais tarde.";
+    });
  if(cfg.address)document.querySelector(".contact-placeholder span").textContent=cfg.address+(cfg.hours?" • "+cfg.hours:"");
 })();
