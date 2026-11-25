@@ -55,7 +55,7 @@
  }
  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
  function renderProducts(list){
-       $("#productGrid").innerHTML = list.map(p => `<article class="product-card"><div class="product-visual">${p.image_url?`<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" loading="lazy" style="width:100%;height:100%;object-fit:contain;padding:8px">`:escapeHtml(p.icon||"＋")}</div><small>${escapeHtml(p.category)}</small><h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.description||"Consulte nossa equipe para mais informações.")}</p><button type="button" data-add="${escapeHtml(p.id)}">Adicionar à minha lista</button></article>`).join("");
+       $("#productGrid").innerHTML = list.map(p => `<article class="product-card"><div class="product-visual">${p.image_url?`<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" loading="lazy" style="width:100%;height:100%;object-fit:contain;padding:8px">`:escapeHtml(p.icon||"＋")}</div><small>${escapeHtml(p.category)}</small><h3>${escapeHtml(p.name)}</h3><strong class="product-price">${p.price != null && p.price !== "" ? Number(p.price).toLocaleString("pt-BR",{style:"currency",currency:"BRL"}) : "Consulte o preço"}</strong><p>${escapeHtml(p.description||"Consulte nossa equipe para mais informações.")}</p><button type="button" data-add="${escapeHtml(p.id)}">Adicionar à minha lista</button></article>`).join("");
     document.querySelectorAll("[data-add]").forEach(b => b.addEventListener("click", () => addToCart(b.dataset.add)));
    $("#resultCount").textContent=`${list.length} ${list.length===1?"item encontrado":"itens encontrados"}`;
    $("#emptyState").hidden=list.length!==0;
