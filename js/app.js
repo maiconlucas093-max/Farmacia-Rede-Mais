@@ -84,8 +84,57 @@
  $("#cartClose").addEventListener("click",()=>$("#cartDialog").close());
  $("#sendOrder").addEventListener("click",()=>{
    if(!cart.length){alert("Adicione pelo menos um produto à sua lista.");return;}
-   const lines=cart.map(x=>{const p=products.find(y=>y.id===x.id);return `- ${p.name} — Quantidade: ${x.qty}`;}).join("\n");
-   openWhatsApp(`Olá! Gostaria de consultar os seguintes produtos na Drogaria Rede Mais:\n\n${lines}\n\nPoderiam confirmar disponibilidade e valores, por favor?`);
+       let total = 0;
+    let hasMissingPrice = false;
+    
+    const formatMoney = value => Number(value).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+    
+    const lines = cart.map((x, i) => {
+      const p = products.find(y => y.id === x.id);
+      
+      if (!p) {
+        hasMissingPrice = true;
+        return `${i + 1}. Produto não encontrado
+   Quantidade: ${x.qty}
+   Valor unitário: A confirmar
+   Subtotal: A confirmar`;
+      }
+      
+      const hasPrice = p.price !== null &&
+        p.price !== "" &&
+        Number.isFinite(Number(p.price));
+      
+      if (!hasPrice) hasMissingPrice = true;
+      
+      const unitPrice = hasPrice ? Number(p.price) : 0;
+      const subtotal = unitPrice * x.qty;
+      
+      total += subtotal;
+      
+      return `${i + 1}. ${p.name}
+   Quantidade: ${x.qty}
+   Valor unitário: ${hasPrice ? formatMoney(unitPrice) : "A confirmar"}
+   Subtotal: ${hasPrice ? formatMoney(subtotal) : "A confirmar"}`;
+    }).join("\n\n");
+    
+    const totalMessage = hasMissingPrice ?
+      "TOTAL DO PEDIDO: A confirmar (há produtos sem preço cadastrado)" :
+      `TOTAL DO PEDIDO: ${formatMoney(total)}`;
+    
+    openWhatsApp(`Olá! Gostaria de realizar o seguinte pedido na Drogaria Rede Mais:
+
+PRODUTOS:
+
+${lines}
+
+${totalMessage}
+
+Confirmo meu interesse na compra dos produtos acima e gostaria de prosseguir com o atendimento para finalizar meu pedido.
+
+Aguardo a confirmação. Obrigado!`);
  });
  $("#menuToggle").addEventListener("click",()=>{const nav=$("#mainNav");const open=nav.classList.toggle("open");$("#menuToggle").setAttribute("aria-expanded",String(open));});
  document.querySelectorAll("#mainNav a").forEach(a=>a.addEventListener("click",()=>{$("#mainNav").classList.remove("open");$("#menuToggle").setAttribute("aria-expanded","false");}));
